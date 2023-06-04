@@ -5,11 +5,13 @@
 # -------------- -------------- -------------- -------------- -------------- -------------- -------
 # Pin Assignments -- all other pins handled by board BSP
 # -------------- -------------- -------------- -------------- -------------- -------------- -------
-set_property PACKAGE_PIN AP18 [get_ports PL_SYSREF[0]]
-set_property PACKAGE_PIN AN11 [get_ports PL_CLK[0]]
+set_property PACKAGE_PIN AP18 [get_ports PL_SYSREF_clk_p]
+set_property PACKAGE_PIN AN11 [get_ports PL_CLK_clk_p]
 
-set_property IOSTANDARD LVCMOS18 [get_ports {PL_CLK[*]}]
-set_property IOSTANDARD LVCMOS18 [get_ports {PL_SYSREF[*]}]
+set_property IOSTANDARD LVDS [get_ports {PL_CLK_clk_p}]
+set_property IOSTANDARD LVDS [get_ports {PL_CLK_clk_n}]
+set_property IOSTANDARD LVDS [get_ports {PL_SYSREF_clk_p}]
+set_property IOSTANDARD LVDS [get_ports {PL_SYSREF_clk_n}]
 
 # PL ddr4 -----------------------------------------------------------------------------------------
 set_property PACKAGE_PIN G13        [get_ports "sys_clk_ddr4_clk_p"]
@@ -163,11 +165,11 @@ set_property BLOCK_SYNTH.STRATEGY {PERFORMANCE_OPTIMIZED} [get_cells {mts_i/deep
 # -------------- -------------- -------------- -------------- -------------- -------------- -------
 # Timing Constraints
 # -------------- -------------- -------------- -------------- -------------- -------------- -------
-create_clock -period 2.000 -name PL_CLK   [get_ports {PL_CLK}]
+create_clock -period 2.000 -name PL_CLK_clk   [get_ports {PL_CLK_clk_p}]
 
 # Input Delay for PL_SYSREF to ensure MTS requirements via PG269
-set_input_delay -clock [get_clocks PL_CLK_clk] -min -add_delay 2.000 [get_ports PL_SYSREF]
-set_input_delay -clock [get_clocks PL_CLK_clk] -max -add_delay 2.031 [get_ports PL_SYSREF]
+set_input_delay -clock [get_clocks PL_CLK_clk] -min -add_delay 2.000 [get_ports PL_SYSREF_clk_p]
+set_input_delay -clock [get_clocks PL_CLK_clk] -max -add_delay 2.031 [get_ports PL_SYSREF_clk_p]
 set_property CLOCK_DEDICATED_ROUTE ANY_CMT_COLUMN [get_nets mts_i/clocktreeMTS/BUFG_PL_CLK/U0/BUFG_O[0]]
 
 set_false_path -from [get_ports reset]
